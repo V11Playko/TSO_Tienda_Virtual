@@ -1,0 +1,48 @@
+-- Carga del catálogo inicial: 20 prendas (precios en COP)
+-- Las imágenes son placeholders: reemplazar por fotos propias o de bancos libres.
+
+INSERT INTO categoria (nombre) VALUES
+    ('Camisetas'), ('Camisas'), ('Blusas'), ('Pantalones'), ('Shorts'), ('Faldas'),
+    ('Vestidos'), ('Chaquetas'), ('Buzos'), ('Suéteres'), ('Deportiva'), ('Accesorios');
+
+INSERT INTO prenda (nombre, categoria_id, genero, talla, color, material, marca, precio, stock, imagen_url, descripcion) VALUES
+('Camiseta básica de algodón', (SELECT id FROM categoria WHERE nombre = 'Camisetas'), 'Unisex', 'S-XL', 'Blanco', 'Algodón 100%', 'Urbano Basics', 39900, 40,
+ 'https://placehold.co/400x500?text=Camiseta+basica', 'Camiseta de cuello redondo en algodón suave. Ideal para el uso diario y para combinar con cualquier prenda.'),
+('Camiseta estampada', (SELECT id FROM categoria WHERE nombre = 'Camisetas'), 'Hombre', 'S-XL', 'Negro', 'Algodón 100%', 'Urbano Basics', 49900, 30,
+ 'https://placehold.co/400x500?text=Camiseta+estampada', 'Camiseta con estampado frontal de diseño urbano. Tela resistente que conserva el color tras los lavados.'),
+('Camisa manga larga de lino', (SELECT id FROM categoria WHERE nombre = 'Camisas'), 'Hombre', 'S-XL', 'Beige', 'Lino', 'Costa Linen', 89900, 20,
+ 'https://placehold.co/400x500?text=Camisa+de+lino', 'Camisa fresca de lino con botones al frente. Perfecta para climas cálidos y ocasiones semiformales.'),
+('Blusa manga corta', (SELECT id FROM categoria WHERE nombre = 'Blusas'), 'Mujer', 'XS-L', 'Rosado', 'Viscosa', 'Flora', 59900, 25,
+ 'https://placehold.co/400x500?text=Blusa+manga+corta', 'Blusa ligera de caída suave con manga corta. Cómoda para la oficina o salidas casuales.'),
+('Jean slim', (SELECT id FROM categoria WHERE nombre = 'Pantalones'), 'Hombre', '28-36', 'Azul', 'Denim con elastano', 'Denim Co', 119900, 30,
+ 'https://placehold.co/400x500?text=Jean+slim', 'Jean de corte ajustado con un toque de elasticidad. Cinco bolsillos y cierre con cremallera.'),
+('Jean mom', (SELECT id FROM categoria WHERE nombre = 'Pantalones'), 'Mujer', '6-14', 'Azul claro', 'Denim', 'Denim Co', 129900, 25,
+ 'https://placehold.co/400x500?text=Jean+mom', 'Jean de tiro alto y pierna recta holgada. Lavado claro de estilo retro.'),
+('Pantalón jogger', (SELECT id FROM categoria WHERE nombre = 'Pantalones'), 'Unisex', 'S-XL', 'Gris', 'Algodón perchado', 'Urbano Basics', 79900, 35,
+ 'https://placehold.co/400x500?text=Pantalon+jogger', 'Jogger con pretina elástica y puños en el tobillo. Muy cómodo para descansar o salir.'),
+('Short deportivo', (SELECT id FROM categoria WHERE nombre = 'Shorts'), 'Hombre', 'S-XL', 'Negro', 'Poliéster', 'Activa', 44900, 30,
+ 'https://placehold.co/400x500?text=Short+deportivo', 'Short liviano de secado rápido con bolsillos laterales. Pensado para correr y entrenar.'),
+('Falda midi', (SELECT id FROM categoria WHERE nombre = 'Faldas'), 'Mujer', 'XS-L', 'Negro', 'Poliéster', 'Flora', 74900, 18,
+ 'https://placehold.co/400x500?text=Falda+midi', 'Falda de largo midi con pretina elástica. Versátil para looks formales o casuales.'),
+('Vestido casual', (SELECT id FROM categoria WHERE nombre = 'Vestidos'), 'Mujer', 'XS-L', 'Rojo', 'Algodón', 'Flora', 109900, 15,
+ 'https://placehold.co/400x500?text=Vestido+casual', 'Vestido fresco de algodón con silueta suelta. Ideal para el día a día.'),
+('Vestido de fiesta', (SELECT id FROM categoria WHERE nombre = 'Vestidos'), 'Mujer', 'S-L', 'Verde esmeralda', 'Satín', 'Gala', 189900, 10,
+ 'https://placehold.co/400x500?text=Vestido+de+fiesta', 'Vestido largo en satín con brillo sutil. Pensado para eventos y celebraciones de noche.'),
+('Chaqueta de jean', (SELECT id FROM categoria WHERE nombre = 'Chaquetas'), 'Unisex', 'S-XL', 'Azul', 'Denim', 'Denim Co', 149900, 15,
+ 'https://placehold.co/400x500?text=Chaqueta+de+jean', 'Chaqueta clásica de jean con bolsillos de pecho. Una prenda que combina con todo.'),
+('Chaqueta cortavientos', (SELECT id FROM categoria WHERE nombre = 'Chaquetas'), 'Hombre', 'M-XL', 'Azul marino', 'Nailon', 'Activa', 139900, 20,
+ 'https://placehold.co/400x500?text=Cortavientos', 'Chaqueta liviana que protege del viento y la llovizna. Capucha ajustable y bolsillos con cremallera.'),
+('Buzo con capucha', (SELECT id FROM categoria WHERE nombre = 'Buzos'), 'Unisex', 'S-XL', 'Gris', 'Algodón perchado', 'Urbano Basics', 99900, 28,
+ 'https://placehold.co/400x500?text=Buzo+con+capucha', 'Buzo abrigado con capucha y bolsillo canguro. Interior perchado muy suave.'),
+('Suéter tejido', (SELECT id FROM categoria WHERE nombre = 'Suéteres'), 'Mujer', 'S-L', 'Crema', 'Acrílico y lana', 'Andina', 89900, 18,
+ 'https://placehold.co/400x500?text=Sueter+tejido', 'Suéter de punto grueso con cuello redondo. Abriga sin perder estilo en días fríos.'),
+('Camiseta deportiva', (SELECT id FROM categoria WHERE nombre = 'Deportiva'), 'Mujer', 'XS-L', 'Fucsia', 'Poliéster', 'Activa', 54900, 22,
+ 'https://placehold.co/400x500?text=Camiseta+deportiva', 'Camiseta transpirable que aleja el sudor de la piel. Ideal para gimnasio y running.'),
+('Leggings deportivos', (SELECT id FROM categoria WHERE nombre = 'Deportiva'), 'Mujer', 'XS-L', 'Negro', 'Poliéster con elastano', 'Activa', 64900, 30,
+ 'https://placehold.co/400x500?text=Leggings', 'Leggings de tiro alto con compresión suave. No se transparentan al hacer ejercicio.'),
+('Gorra', (SELECT id FROM categoria WHERE nombre = 'Accesorios'), 'Unisex', 'Única', 'Negro', 'Algodón', 'Urbano Basics', 29900, 50,
+ 'https://placehold.co/400x500?text=Gorra', 'Gorra de seis paneles con cierre ajustable. Protege del sol y completa cualquier look.'),
+('Bufanda', (SELECT id FROM categoria WHERE nombre = 'Accesorios'), 'Unisex', 'Única', 'Gris', 'Acrílico', 'Andina', 34900, 25,
+ 'https://placehold.co/400x500?text=Bufanda', 'Bufanda tejida, larga y suave al tacto. Perfecta para las mañanas frías.'),
+('Cinturón de cuero', (SELECT id FROM categoria WHERE nombre = 'Accesorios'), 'Hombre', '85-105', 'Café', 'Cuero', 'Talabarte', 59900, 20,
+ 'https://placehold.co/400x500?text=Cinturon+de+cuero', 'Cinturón de cuero genuino con hebilla metálica. Talla en centímetros de cintura.');
