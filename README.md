@@ -2,7 +2,7 @@
 
 Base del proyecto "Construcción de una tienda virtual": API REST de un catálogo de ropa con registro de clientes, búsqueda básica y avanzada, artículos con sus características, compra por artículo y carrito de compras.
 
-> **Estado (Entrega 1):** el repositorio tiene la estructura, la base de datos y el catálogo inicial de 20 prendas. Los módulos están como esqueleto y responden **501** hasta que se implementen en las semanas 4 a 7.
+> **Estado:** API REST funcional para catálogo, búsqueda, registro, inicio/cierre de sesión, carrito y compra individual. El catálogo inicial contiene 20 prendas; las imágenes de ejemplo siguen usando placeholders.
 
 ## 1. Contexto académico
 - **Curso:** Desarrollo de software en equipos – Politécnico Grancolombiano
@@ -43,12 +43,12 @@ co.edu.poli.catalogo
 Dentro de cada módulo:
 <modulo>/
 ├── domain/                modelos (records de Java)
-├── application/           <Modulo>Service (esqueleto con TODO)
+├── application/           casos de uso y servicios
 │   ├── port/in/           casos de uso
 │   └── port/out/          repositorios
 └── infrastructure/
     ├── web/               controlador REST y DTOs
-    └── persistence/       TODO: entidades JPA y adaptador
+    └── persistence/       entidades JPA y adaptadores
 ```
 
 ## 5. Cómo ejecutar
@@ -68,32 +68,30 @@ Para ver las 20 prendas cargadas:
 docker exec -it catalogo-postgres psql -U catalogo -d catalogo -c "SELECT id, nombre, precio, stock FROM prenda;"
 ```
 
-### Endpoints (todos responden 501 por ahora)
+### Endpoints
 | Método | Ruta | Módulo |
 |--------|------|--------|
 | GET | `/api/prendas` | 4. lista de prendas |
 | GET | `/api/prendas/{id}` | 4. detalle |
 | GET | `/api/busqueda?nombre=` | 2. búsqueda básica |
-| GET | `/api/busqueda/avanzada` | 3. filtros opcionales: `categoria, genero, talla, color, marca, precioMin, precioMax` |
+| GET | `/api/busqueda/avanzada` | 3. filtros opcionales: `categoria, genero, talla, color, marca, precioMin, precioMax, disponible` |
 | POST | `/api/usuarios/registro` | 1. registro |
-| POST | `/api/usuarios/login` | 1. inicio de sesión |
+| POST | `/api/usuarios/login` | 1. inicio de sesión (crea cookie de sesión) |
+| POST | `/api/usuarios/logout` | 1. cierre de sesión |
 | GET / POST / PUT / DELETE | `/api/carrito`, `/api/carrito/items`, `/api/carrito/items/{itemId}` | 6. carrito |
 | POST | `/api/compras` | 5. compra por artículo |
 
-```bash
-curl -i http://localhost:8080/api/prendas
-# HTTP/1.1 501  {"fecha":"...","estado":501,"error":"Not Implemented","mensaje":"Funcionalidad pendiente de implementar: artículos y características","ruta":"/api/prendas"}
-```
+El login crea una sesión HTTP; las operaciones de carrito y compra requieren enviar la cookie de sesión devuelta por el servidor. El encabezado `X-Usuario-Id` ya no se acepta como identidad.
 
 ## 6. Módulos
 | # | Módulo | Estado | Responsable | Apoyo |
 |---|--------|--------|-------------|-------|
-| 1 | Registro e inicio de sesión | 🚧 pendiente | Ronald | Heinner |
-| 2 | Búsqueda básica | 🚧 pendiente | Heinner | Isabel |
-| 3 | Búsqueda avanzada | 🚧 pendiente | Ronald | Isabel |
-| 4 | Artículos y características | 🚧 pendiente | Isabel | Ronald |
-| 5 | Compra por artículo | 🚧 pendiente | Heinner | Ronald |
-| 6 | Carrito de compras | 🚧 pendiente | Isabel | Heinner |
+| 1 | Registro e inicio/cierre de sesión | ✅ implementado; BCrypt y sesión HTTP | Ronald | Heinner |
+| 2 | Búsqueda básica | ✅ implementado; parcial y sin distinguir mayúsculas | Heinner | Isabel |
+| 3 | Búsqueda avanzada | ✅ implementado; filtros combinables y disponibilidad | Ronald | Isabel |
+| 4 | Artículos y características | ✅ implementado; listado y detalle | Isabel | Ronald |
+| 5 | Compra por artículo | ✅ implementado; validación y descuento de stock transaccional | Heinner | Ronald |
+| 6 | Carrito de compras | ✅ implementado; cantidades y total calculado | Isabel | Heinner |
 | 7 | Catálogo inicial (20 prendas) | ✅ datos cargados con Flyway (`V2__catalogo_inicial.sql`); faltan las imágenes reales | Todos | — |
 | – | Esquema de base de datos | ✅ `V1__esquema.sql` | Ronald / Heinner | — |
 
@@ -129,6 +127,6 @@ Ver el índice en [docs/README.md](docs/README.md).
 - **Imágenes:** las prendas usan URLs de ejemplo (`placehold.co`). **Deben reemplazarse por fotos propias o de bancos de imágenes libres** para evitar problemas de derechos de uso (riesgo 5 del documento).
 - **Marcas, materiales y descripciones** del catálogo inicial son inventados y genéricos.
 - **Talla:** se guarda como texto con el rango disponible (`S-XL`, `28-36`, `Única`).
-- **Usuario sin sesión:** mientras no exista login, el carrito y la compra identifican al usuario con el encabezado `X-Usuario-Id`.
+- **Sesión:** el login establece una sesión HTTP y carrito/compra usan la identidad de esa sesión.
 - **BCrypt:** se incluye solo `spring-security-crypto` (no Spring Security completo), así los endpoints no quedan bloqueados.
 - **Paquete `comun`:** contiene las excepciones compartidas y el manejador global de errores; no es un módulo de negocio.
