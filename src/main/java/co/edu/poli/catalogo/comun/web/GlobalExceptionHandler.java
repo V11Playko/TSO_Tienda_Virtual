@@ -1,6 +1,9 @@
 package co.edu.poli.catalogo.comun.web;
 
 import co.edu.poli.catalogo.comun.FuncionalidadNoImplementadaException;
+import co.edu.poli.catalogo.comun.AutenticacionException;
+import co.edu.poli.catalogo.comun.RecursoExistenteException;
+import co.edu.poli.catalogo.comun.ReglaNegocioException;
 import co.edu.poli.catalogo.comun.RecursoNoEncontradoException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
@@ -28,6 +32,26 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RecursoNoEncontradoException.class)
     public ResponseEntity<ErrorResponse> noEncontrado(RecursoNoEncontradoException ex, HttpServletRequest req) {
         return responder(HttpStatus.NOT_FOUND, ex.getMessage(), req);
+    }
+
+    @ExceptionHandler(AutenticacionException.class)
+    public ResponseEntity<ErrorResponse> noAutenticado(AutenticacionException ex, HttpServletRequest req) {
+        return responder(HttpStatus.UNAUTHORIZED, ex.getMessage(), req);
+    }
+
+    @ExceptionHandler(RecursoExistenteException.class)
+    public ResponseEntity<ErrorResponse> conflicto(RecursoExistenteException ex, HttpServletRequest req) {
+        return responder(HttpStatus.CONFLICT, ex.getMessage(), req);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorResponse> conflictoPersistencia(DataIntegrityViolationException ex, HttpServletRequest req) {
+        return responder(HttpStatus.CONFLICT, "El registro entra en conflicto con datos existentes", req);
+    }
+
+    @ExceptionHandler(ReglaNegocioException.class)
+    public ResponseEntity<ErrorResponse> reglaNegocio(ReglaNegocioException ex, HttpServletRequest req) {
+        return responder(HttpStatus.BAD_REQUEST, ex.getMessage(), req);
     }
 
     @ExceptionHandler(NoResourceFoundException.class)

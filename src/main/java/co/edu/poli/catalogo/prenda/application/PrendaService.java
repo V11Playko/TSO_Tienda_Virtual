@@ -1,30 +1,19 @@
 package co.edu.poli.catalogo.prenda.application;
 
-import co.edu.poli.catalogo.comun.FuncionalidadNoImplementadaException;
+import co.edu.poli.catalogo.comun.RecursoNoEncontradoException;
 import co.edu.poli.catalogo.prenda.application.port.in.ConsultarPrendasUseCase;
+import co.edu.poli.catalogo.prenda.application.port.out.PrendaRepositoryPort;
 import co.edu.poli.catalogo.prenda.domain.Prenda;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
-/**
- * ESQUELETO del módulo 4: artículos y características.
- * TODO (Isabel):
- *  - Implementar PrendaRepositoryPort con JPA (tablas prenda y categoria) e inyectarlo aquí.
- *  - obtenerPorId: si no existe, lanzar RecursoNoEncontradoException (responde 404).
- */
 @Service
 public class PrendaService implements ConsultarPrendasUseCase {
-
-    private static final String FUNCIONALIDAD = "artículos y características";
-
-    @Override
-    public List<Prenda> listar() {
-        throw new FuncionalidadNoImplementadaException(FUNCIONALIDAD);
-    }
-
-    @Override
-    public Prenda obtenerPorId(Long id) {
-        throw new FuncionalidadNoImplementadaException(FUNCIONALIDAD);
+    private final PrendaRepositoryPort prendas;
+    public PrendaService(PrendaRepositoryPort prendas) { this.prendas=prendas; }
+    @Override @Transactional(readOnly=true) public List<Prenda> listar() { return prendas.listar(); }
+    @Override @Transactional(readOnly=true) public Prenda obtenerPorId(Long id) {
+        return prendas.buscarPorId(id).orElseThrow(()->new RecursoNoEncontradoException("No existe la prenda " + id));
     }
 }

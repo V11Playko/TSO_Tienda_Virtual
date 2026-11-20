@@ -12,5 +12,10 @@ public record FiltroBusqueda(
         String color,
         String marca,
         BigDecimal precioMin,
-        BigDecimal precioMax) {
+        BigDecimal precioMax,
+        Boolean disponible) {
+    public FiltroBusqueda(String categoria, String genero, String talla, String color, String marca,
+                          BigDecimal precioMin, BigDecimal precioMax) {
+        this(categoria,genero,talla,color,marca,precioMin,precioMax,null);
+    }
 }

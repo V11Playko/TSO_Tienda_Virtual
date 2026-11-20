@@ -36,8 +36,9 @@ public class BusquedaController {
             @RequestParam(required = false) String color,
             @RequestParam(required = false) String marca,
             @RequestParam(required = false) BigDecimal precioMin,
-            @RequestParam(required = false) BigDecimal precioMax) {
-        FiltroBusqueda filtro = new FiltroBusqueda(categoria, genero, talla, color, marca, precioMin, precioMax);
+            @RequestParam(required = false) BigDecimal precioMax,
+            @RequestParam(required = false) Boolean disponible) {
+        FiltroBusqueda filtro = new FiltroBusqueda(categoria, genero, talla, color, marca, precioMin, precioMax, disponible);
         return buscarPrendas.buscarAvanzada(filtro).stream().map(PrendaResponse::desde).toList();
     }
 }

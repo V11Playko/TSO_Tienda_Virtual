@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
-/** ESQUELETO: los endpoints responden 501 hasta implementar UsuarioService. */
+/** Registro, inicio y cierre de sesión. */
 @RestController
 @RequestMapping("/api/usuarios")
 public class UsuarioController {
@@ -30,9 +32,19 @@ public class UsuarioController {
                 registrarUsuario.registrar(req.nombre(), req.correo(), req.contrasena(), req.direccionEnvio()));
     }
 
-    // TODO: decidir qué devuelve el login (por ahora los datos del usuario; más adelante sesión o token)
     @PostMapping("/login")
-    public UsuarioResponse login(@Valid @RequestBody LoginRequest req) {
-        return UsuarioResponse.desde(iniciarSesion.iniciarSesion(req.correo(), req.contrasena()));
+    public UsuarioResponse login(@Valid @RequestBody LoginRequest req, HttpServletRequest request) {
+        var usuario=iniciarSesion.iniciarSesion(req.correo(), req.contrasena());
+        HttpSession sesion=request.getSession(true);
+        request.changeSessionId();
+        sesion.setAttribute("usuarioId", usuario.id());
+        return UsuarioResponse.desde(usuario);
+    }
+
+    @PostMapping("/logout")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void logout(HttpServletRequest request) {
+        HttpSession session=request.getSession(false);
+        if(session!=null) session.invalidate();
     }
 }
